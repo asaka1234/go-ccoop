@@ -3,6 +3,7 @@ package go_ccoop
 type CCoopInitParams struct {
 	MerchantId string `json:"merchantId" mapstructure:"merchantId" config:"merchantId"  yaml:"merchantId"` // merchantId
 	SecretKey  string `json:"secretKey" mapstructure:"secretKey" config:"secretKey"  yaml:"secretKey"`
+	Ip         string `json:"ip" mapstructure:"ip" config:"ip"  yaml:"ip"` //三方psp做callback时的服务器ip(做白名单验证)
 
 	BaseUrl   string `json:"baseUrl" mapstructure:"baseUrl" config:"baseUrl"  yaml:"baseUrl"`
 	QRCodeUrl string `json:"qrCodeUrl" mapstructure:"qrCodeUrl" config:"qrCodeUrl"  yaml:"qrCodeUrl"`

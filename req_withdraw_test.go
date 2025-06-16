@@ -8,9 +8,9 @@ import (
 func TestWithdraw(t *testing.T) {
 
 	//构造client
-	cli := NewClient(nil, &CCoopInitParams{Merchant_ID, SECRET_KEY, BASE_URL, QRCode_Url, Deposit_CallBack_Url, DepositFeBackUrl, WithdrawBackUrl, WithdrawFeBackUrl})
+	cli := NewClient(nil, &CCoopInitParams{Merchant_ID, SECRET_KEY, IP, BASE_URL, QRCode_Url, Deposit_CallBack_Url, DepositFeBackUrl, WithdrawBackUrl, WithdrawFeBackUrl})
 	cli.SetDebugModel(true)
-	
+
 	//发请求
 	resp, err := cli.Withdraw(GenWithdrawRequestDemo())
 	if err != nil {
