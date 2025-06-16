@@ -1,23 +1,29 @@
 package utils
 
-func GenSign(params map[string]interface{}, backKey string) string {
-	// 获取当前时间并格式化为 yyyyMMddHHmmss
-	//currentTime := time.Now().Format("20060102150405") // Go的特定时间格式
+import (
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
+	"errors"
+)
 
-	// TODO 拼接签名字符串
-	/*
-		signText := params["mer_id"] + customerName + amount + req.CURRENCY +
-			currentTime + props.CCoop_Credentials.CallBack_Key +
-			internalReq.TrackingInfo.IPAddress
+func Sign(merchantId string, secretKey string) (string, error) {
+	// 1. Validate key
+	if secretKey == "" {
+		return "", errors.New("APP_KEY 参数为空，请填写")
+	}
 
-	*/
-	signText := ""
+	h := hmac.New(sha256.New, []byte(secretKey))
+	h.Write([]byte(merchantId))
+	signResult := hex.EncodeToString(h.Sum(nil))
 
-	// 计算MD5签名
-	return GetMD5([]byte(signText))
+	return signResult, nil
 }
 
-func VerifySign(params map[string]interface{}, backKey string, sign string) bool {
-	signSelf := GenSign(params, backKey)
-	return signSelf == signSelf
+func Verify(merchantId string, secretKey string, signKey string) (bool, error) {
+	// Check if signature exists in params
+	currentSignature, _ := Sign(merchantId, secretKey)
+
+	// Compare signatures
+	return signKey == currentSignature, nil
 }

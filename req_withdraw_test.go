@@ -7,11 +7,8 @@ import (
 
 func TestWithdraw(t *testing.T) {
 
-	cc := One2payDepositStatusSuccess
-	fmt.Printf("==wsx====>%d\n", int(cc))
-
 	//构造client
-	cli := NewClient(nil, PARTNER_CODE, AUTH_KEY, DEVICE, CHANNEL, DEPOSIT_URL, PAYOUT_URL)
+	cli := NewClient(nil, &CCoopInitParams{Merchant_ID, SECRET_KEY, BASE_URL, QRCode_Url, Deposit_CallBack_Url, DepositFeBackUrl, WithdrawBackUrl, WithdrawFeBackUrl})
 
 	//发请求
 	resp, err := cli.Withdraw(GenWithdrawRequestDemo())
@@ -22,15 +19,11 @@ func TestWithdraw(t *testing.T) {
 	fmt.Printf("resp:%+v\n", resp)
 }
 
-func GenWithdrawRequestDemo() One2PayWithdrawRequest {
-	return One2PayWithdrawRequest{
-		BankAcc:       "0652078409",
-		BankCode:      "004",
-		BankName:      "KASIKORN BANK",
-		AccountName:   "Manop Tangngam",
-		Amount:        1000.50,
-		MobileNo:      "0805933181",
-		TransactionBy: "Jack Developer",
-		Ref1:          "123456789012345678",
+func GenWithdrawRequestDemo() CCoopWithdrawRequest {
+	return CCoopWithdrawRequest{
+		Withdraw:     "700",
+		OrderNum:     "9438965", //Unique customer id in your system. 业务系统里的唯一客户id
+		OrderName:    "哈哈哈",
+		ExchangeRate: "1",
 	}
 }

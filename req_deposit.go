@@ -2,6 +2,7 @@ package go_ccoop
 
 import (
 	"crypto/tls"
+	"fmt"
 	"github.com/asaka1234/go-ccoop/utils"
 	"github.com/mitchellh/mapstructure"
 	"time"
@@ -9,40 +10,44 @@ import (
 
 func (cli *Client) Deposit(req CCoopDepositRequest) (*CCoopDepositResponse, error) {
 
-	rawURL := cli.Deposit_Url
+	rawURL := cli.Params.BaseUrl
+
+	cTime := time.Now()
 
 	var params map[string]interface{}
 	mapstructure.Decode(req, &params)
 	params["order_status"] = "0"     //写死
 	params["trade_type"] = "deposit" //写死
-	params["create_time"] = time.Now().Format("2006-01-02")
-	params["mer_id"] = cli.Merchant_ID
-	params["merchant"] = cli.Merchant_Title
-	params["name"] = cli.Merchant_Name
-	params["currency_amo"] = cli.Exchange_To_Currency
-	params["callback_url"] = cli.Deposit_CallBack_Url
-	params["return_url"] = cli.DepositReturn_Url
+	params["create_time"] = cTime.Format("2006-01-02")
+	params["mer_id"] = cli.Params.MerchantId           //cli.merchantID
+	params["name"] = "john"                            //cli.merchantName
+	params["callback_url"] = cli.Params.DepositBackUrl //ajax回调接口
+	params["return_url"] = cli.Params.DepositFeBackUrl //前端回跳地址
+	params["ref1"] = req.OrderNum                      //也是商户订单号
 
-	// Generate signature
-	signStr := utils.GenSign(params, cli.CallBack_Key)
-	params["ref1"] = signStr //TODO  要重点关注下算签名算法, 感觉之前c#实现的不对
+	signStr, _ := utils.Sign(cli.Params.MerchantId, cli.Params.SecretKey)
+	params["signature"] = signStr
 
 	//返回值会放到这里
 	var result CCoopDepositResponse
 
-	_, err := cli.ryClient.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true}).
+	resp, err := cli.ryClient.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true}).
 		SetCloseConnection(true).
 		R().
-		SetBody(req).
+		SetBody(params).
 		SetHeaders(getHeaders()).
 		SetResult(&result).
 		SetError(&result).
 		Post(rawURL)
 
-	//fmt.Printf("result: %s\n", string(resp.Body()))
+	fmt.Printf("result: %s\n", string(resp.Body()))
 
 	if err != nil {
 		return nil, err
+	}
+
+	if result.Status == "ok" && result.Ref1 != "" {
+		result.QRCodeUrl = cli.Params.QRCodeUrl + result.Ref1 //拼凑收银台地址
 	}
 
 	return &result, err

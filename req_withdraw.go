@@ -2,36 +2,48 @@ package go_ccoop
 
 import (
 	"crypto/tls"
-	"errors"
+	"fmt"
+	"github.com/asaka1234/go-ccoop/utils"
+	"github.com/mitchellh/mapstructure"
+	"time"
 )
 
-// 退款
-func (cli *Client) Withdraw(req One2PayWithdrawRequest) (*One2PayWithdrawResponse, error) {
+func (cli *Client) Withdraw(req CCoopWithdrawRequest) (*CCoopWithdrawResponse, error) {
 
-	rawURL := cli.WithdrawURL
+	rawURL := cli.Params.BaseUrl
+
+	cTime := time.Now()
+
+	var params map[string]interface{}
+	mapstructure.Decode(req, &params)
+	params["order_status"] = "0"      //写死
+	params["trade_type"] = "withdraw" //写死
+	params["create_time"] = cTime.Format("2006-01-02")
+	params["mer_id"] = cli.Params.MerchantId           //cli.merchantID
+	params["name"] = "john"                            //cli.merchantName
+	params["callback_url"] = cli.Params.DepositBackUrl //ajax回调接口
+	params["return_url"] = cli.Params.DepositFeBackUrl //前端回跳地址
+	params["ref1"] = req.OrderNum                      //也是商户订单号
+
+	signStr, _ := utils.Sign(cli.Params.MerchantId, cli.Params.SecretKey)
+	params["signature"] = signStr
 
 	//返回值会放到这里
-	var result One2PayWithdrawResponse
+	var result CCoopWithdrawResponse
 
 	resp, err := cli.ryClient.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true}).
 		SetCloseConnection(true).
 		R().
-		SetBody(req).
-		SetHeaders(getAuthHeaders(cli.PartnerCode, cli.AuthKey, cli.Channel, cli.Device)).
+		SetBody(params).
+		SetHeaders(getHeaders()).
 		SetResult(&result).
 		SetError(&result).
 		Post(rawURL)
 
+	fmt.Printf("result: %s\n", string(resp.Body()))
+
 	if err != nil {
 		return nil, err
-	}
-
-	//-----------错误处理------------------------
-	if resp.StatusCode() != 1000 {
-		if result.Error != "" {
-			return nil, errors.New(result.Error)
-		}
-		return nil, errors.New(result.Message)
 	}
 
 	return &result, err

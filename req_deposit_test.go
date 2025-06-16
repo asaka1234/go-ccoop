@@ -8,10 +8,10 @@ import (
 func TestGenQRCode(t *testing.T) {
 
 	//构造client
-	cli := NewClient(nil, PARTNER_CODE, AUTH_KEY, DEVICE, CHANNEL, DEPOSIT_URL, PAYOUT_URL)
+	cli := NewClient(nil, &CCoopInitParams{Merchant_ID, SECRET_KEY, BASE_URL, QRCode_Url, Deposit_CallBack_Url, DepositFeBackUrl, WithdrawBackUrl, WithdrawFeBackUrl})
 
 	//发请求
-	resp, err := cli.GenQRCode(GenDepositRequestDemo())
+	resp, err := cli.Deposit(GenDepositRequestDemo())
 	if err != nil {
 		fmt.Printf("err:%s\n", err.Error())
 		return
@@ -19,10 +19,11 @@ func TestGenQRCode(t *testing.T) {
 	fmt.Printf("resp:%+v\n", resp)
 }
 
-func GenDepositRequestDemo() One2PayGenQRCodeRequest {
-	return One2PayGenQRCodeRequest{
-		Amount: 700,
-		Ref1:   "9438965", //Unique customer id in your system. 业务系统里的唯一客户id
-		Ref3:   "uname",
+func GenDepositRequestDemo() CCoopDepositRequest {
+	return CCoopDepositRequest{
+		Deposit:      "700",
+		OrderNum:     "9438965", //Unique customer id in your system. 业务系统里的唯一客户id
+		OrderName:    "哈哈哈",
+		ExchangeRate: "1",
 	}
 }
