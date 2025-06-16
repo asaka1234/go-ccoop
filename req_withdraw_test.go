@@ -22,7 +22,8 @@ func TestWithdraw(t *testing.T) {
 
 func GenWithdrawRequestDemo() CCoopWithdrawRequest {
 	return CCoopWithdrawRequest{
-		Withdraw: "700",
-		OrderNum: "9438965", //Unique customer id in your system. 业务系统里的唯一客户id
+		Withdraw:  "700",
+		OrderNum:  "9438965", //Unique customer id in your system. 业务系统里的唯一客户id
+		OrderName: "你好",
 	}
 }

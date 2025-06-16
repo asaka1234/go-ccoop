@@ -34,10 +34,10 @@ type CCoopInitParams struct {
 	}
 */
 type CCoopDepositRequest struct {
-	OrderNum string `json:"order_num" mapstructure:"order_num"` //商户的订单号
-	Deposit  string `json:"deposit" mapstructure:"deposit"`     //数量 amount (ccy就是THB,是写死的)
+	OrderNum  string `json:"order_num" mapstructure:"order_num"`   //商户的订单号
+	Deposit   string `json:"deposit" mapstructure:"deposit"`       //数量 amount (ccy就是THB,是写死的)
+	OrderName string `json:"order_name" mapstructure:"order_name"` //商户订单username
 	//以下sdk来搞`
-	//OrderName    string `json:"order_name" mapstructure:"order_name"`       //商户订单username
 	//ExchangeRate string `json:"exchange_rate" mapstructure:"exchange_rate"` //TODO 这里要看一下具体实现
 	//OrderStatus string `json:"order_status" mapstructure:"order_status"` //写死，都是 0  created
 	//TradeType  string `json:"trade_type" mapstructure:"trade_type"`   //写死deposit
@@ -65,42 +65,17 @@ type CCoopDepositResponse struct {
 // ----------deposit callback-------------------------
 
 type CCoopDepositBackReq struct {
-	RespCode   int     `json:"resp_code"` //200是成功
-	RespMsg    string  `json:"resp_msg"`
-	Command    string  `json:"command"`
-	BankRef    string  `json:"bank_ref"`
-	TranxId    string  `json:"tranx_id"`
-	One2PayRef string  `json:"one2pay_ref"`
-	Datetime   string  `json:"datetime"`
-	EffDate    string  `json:"effdate"`
-	Amount     float64 `json:"amount"`
-	CusName    string  `json:"cusname"`
-	Ref1       string  `json:"ref1"` //放业务自己的orderNo (只能是数字/字母)
-	Ref2       string  `json:"ref2"`
-	Ref3       string  `json:"ref3"`
-	Ref4       string  `json:"ref4"`     // 这个用来做签名, 是amount/ref1/authkey的一个md5签名的截断值(18位)
-	TransId    string  `json:"trans_id"` //是psp三方的订单id
+	OrderNum    string `json:"order_num"`   //商户订单号
+	CreateTime  string `json:"create_time"` //2025-06-16
+	TradeType   string `json:"trade_type"`  //deposit
+	CurrencyAmo string `json:"currency_amo"`
+	Merchant    string `json:"merchant"`
+	OrderName   string `json:"order_name"`
+	Deposit     string `json:"deposit"`      //金额
+	OrderStatus string `json:"order_status"` //比如: confirm
+	MerID       string `json:"mer_id"`       //商户id
+	Ref1        string `json:"ref1"`
 }
-
-/*
-{
-	"resp_code":200,
-	"resp_msg":"Success“,
-	"command":"Payment",
-	"bank_ref":"ITMX 13078496",
-	"tranx_id":"5oaY6TEYxKPBi34yDxM2",
-	"one2pay_ref":"ABC220407080726611",
-	"datetime":"20231004133121",
-	"effdate":"20231004",
-	"amount":18658.26,
-	"cusname":"นาย จิณณะ แสงฤทธิ์“,
-	"ref1":"SPI729131696400892",
-	"ref2":“123456",
-	"ref3":“abc123-",
-	"ref4":"abc123-",
-	"trans_id":"2f0cf4e1ceb53c4053837d0860c19620“
-}
-*/
 
 type CCoopDepositBackRsp struct {
 	Code    int    `json:"code"`
@@ -128,8 +103,9 @@ type CCoopDepositBackRsp struct {
 	}
 */
 type CCoopWithdrawRequest struct {
-	OrderNum string `json:"order_num" mapstructure:"order_num"` //商户的订单号
-	Withdraw string `json:"withdraw" mapstructure:"withdraw"`   //数量 (ccy就是THB,是写死的)
+	OrderNum  string `json:"order_num" mapstructure:"order_num"`   //商户的订单号
+	Withdraw  string `json:"withdraw" mapstructure:"withdraw"`     //数量 (ccy就是THB,是写死的)
+	OrderName string `json:"order_name" mapstructure:"order_name"` //商户的用户name
 	//以下sdk来搞
 	//ExchangeRate string `json:"ex_rate" mapstructure:"ex_rate"` //写死1
 	//OrderName string `json:"order_name" mapstructure:"order_name"` //这里最好也传merchantOrderNo, 因为回调中有该字段,但是没有order_num
@@ -154,4 +130,25 @@ type CCoopWithdrawResponse struct {
 
 	//manual
 	//QRCodeUrl string `json:"QRCodeUrl"` //这个是自己构造的，并非api返回
+}
+
+// 提现回调
+type CCoopWithdrawBackReq struct {
+	OrderNum    string `json:"order_num"`   //商户订单号
+	CreateTime  string `json:"create_time"` //2025-06-16
+	TradeType   string `json:"trade_type"`  //withdraw
+	CurrencyAmo string `json:"currency_amo"`
+	Merchant    string `json:"merchant"`
+	OrderName   string `json:"order_name"`
+	Withdraw    string `json:"withdraw"`
+	OrderStatus string `json:"order_status"` //比如: confirm
+	MerID       string `json:"mer_id"`       //商户id
+	Ref1        string `json:"ref1"`
+}
+
+type CCoopWithdrawBackRsp struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+	Data    string `json:"data"`
+	Success bool   `json:"success"`
 }

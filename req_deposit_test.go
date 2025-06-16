@@ -21,7 +21,8 @@ func TestGenQRCode(t *testing.T) {
 
 func GenDepositRequestDemo() CCoopDepositRequest {
 	return CCoopDepositRequest{
-		Deposit:  "700",
-		OrderNum: "9438965111", //Unique customer id in your system. 业务系统里的唯一客户id
+		Deposit:   "100",
+		OrderNum:  "9438965111", //Unique customer id in your system. 业务系统里的唯一客户id
+		OrderName: "你好",
 	}
 }
