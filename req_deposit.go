@@ -24,6 +24,8 @@ func (cli *Client) Deposit(req CCoopDepositRequest) (*CCoopDepositResponse, erro
 	params["callback_url"] = cli.Params.DepositBackUrl //ajax回调接口
 	params["return_url"] = cli.Params.DepositFeBackUrl //前端回跳地址
 	params["ref1"] = req.OrderNum                      //也是商户订单号
+	params["ex_rate"] = "1"                            //写死1因为的金额就是thb的,不需要转换
+	params["order_name"] = req.OrderNum                //也是商户订单号. 因为回调里有该字段,但是却没有order_num
 
 	signStr, _ := utils.Sign(cli.Params.MerchantId, cli.Params.SecretKey)
 	params["signature"] = signStr
