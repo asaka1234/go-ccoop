@@ -11,15 +11,21 @@ type Client struct {
 	//depositCallBackUrl string //充值的ajax通知地址
 	//depositReturnUrl   string //这个是pre-order后的一个qrcode显示地址的模板,只要把唯一的query参数加上就可以打开了
 
-	ryClient *resty.Client
-	logger   utils.Logger
+	ryClient  *resty.Client
+	debugMode bool
+	logger    utils.Logger
 }
 
 func NewClient(logger utils.Logger, params *CCoopInitParams) *Client {
 	return &Client{
 		Params: params,
 
-		ryClient: resty.New(), //client实例
-		logger:   logger,
+		ryClient:  resty.New(), //client实例
+		debugMode: false,
+		logger:    logger,
 	}
+}
+
+func (cli *Client) SetDebugModel(debugMode bool) {
+	cli.debugMode = debugMode
 }
