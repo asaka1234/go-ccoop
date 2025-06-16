@@ -8,9 +8,6 @@ import (
 type Client struct {
 	Params *CCoopInitParams
 
-	//depositCallBackUrl string //充值的ajax通知地址
-	//depositReturnUrl   string //这个是pre-order后的一个qrcode显示地址的模板,只要把唯一的query参数加上就可以打开了
-
 	ryClient  *resty.Client
 	debugMode bool
 	logger    utils.Logger

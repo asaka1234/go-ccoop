@@ -8,31 +8,13 @@ type CCoopInitParams struct {
 	BaseUrl   string `json:"baseUrl" mapstructure:"baseUrl" config:"baseUrl"  yaml:"baseUrl"`
 	QRCodeUrl string `json:"qrCodeUrl" mapstructure:"qrCodeUrl" config:"qrCodeUrl"  yaml:"qrCodeUrl"`
 
-	DepositBackUrl    string `json:"depositBackUrl" mapstructure:"depositBackUrl" config:"depositBackUrl"  yaml:"depositBackUrl"`
-	DepositFeBackUrl  string `json:"depositFeBackUrl" mapstructure:"depositFeBackUrl" config:"depositFeBackUrl"  yaml:"depositFeBackUrl"`
-	WithdrawBackUrl   string `json:"withdrawBackUrl" mapstructure:"withdrawBackUrl" config:"withdrawBackUrl"  yaml:"withdrawBackUrl"`
-	WithdrawFeBackUrl string `json:"withdrawFeBackUrl" mapstructure:"withdrawFeBackUrl" config:"withdrawFeBackUrl"  yaml:"withdrawFeBackUrl"`
+	DepositBackUrl   string `json:"depositBackUrl" mapstructure:"depositBackUrl" config:"depositBackUrl"  yaml:"depositBackUrl"`
+	DepositFeBackUrl string `json:"depositFeBackUrl" mapstructure:"depositFeBackUrl" config:"depositFeBackUrl"  yaml:"depositFeBackUrl"`
+	WithdrawBackUrl  string `json:"withdrawBackUrl" mapstructure:"withdrawBackUrl" config:"withdrawBackUrl"  yaml:"withdrawBackUrl"`
 }
 
 // ---------------------------------
 
-/*
-	{
-		  "order_num": "num***",
-		  "create_time": "2023-03-10",
-		  "trade_type": "deposit",
-		  "deposit": "300001",
-		  "order_name": "Admin",
-		  "order_status": "0",
-		  "mer_id": "*******",
-		  "name": "Test",
-		  "ref1": "12345",
-		  "callback_url": "123",
-		  "return_url": "www.ssss.com",
-		  "signature": "4cf32d834aa9b005d7b180762f7a4a9f5e2c21e4bb2a145c980a71a8c3ce3ed0",
-		  "ex_rate": "34.00"
-	}
-*/
 type CCoopDepositRequest struct {
 	OrderNum  string `json:"order_num" mapstructure:"order_num"`   //商户的订单号
 	Deposit   string `json:"deposit" mapstructure:"deposit"`       //数量 amount (ccy就是THB,是写死的)
@@ -86,22 +68,6 @@ type CCoopDepositBackRsp struct {
 
 // ----------withdraw-------------------------
 
-/*
-	{
-	  "order_num": "num***",
-	  "create_time": "2023-03-10",
-	  "trade_type": "withdraw",
-	  "withdraw": "30001",
-	  "order_name": "Admin",
-	  "order_status": "0",
-	  "mer_id": "*******",
-	  "name": "Test",
-	  "ref1": "12345",
-	  "callback_url": "123",
-	  "return_url": "www.ssss.com",
-	  "ex_rate": "34.00"
-	}
-*/
 type CCoopWithdrawRequest struct {
 	OrderNum  string `json:"order_num" mapstructure:"order_num"`   //商户的订单号
 	Withdraw  string `json:"withdraw" mapstructure:"withdraw"`     //数量 (ccy就是THB,是写死的)
@@ -126,9 +92,6 @@ type CCoopWithdrawResponse struct {
 	AcName     string `json:"ac_name"`     //商户订单号.   --->  下单人的姓名,对应request里的 OrderName,
 	CreateTime string `json:"create_time"` //2023-03-10
 	Ref1       string `json:"ref1"`        //psp 三方订单号
-
-	//manual
-	//QRCodeUrl string `json:"QRCodeUrl"` //这个是自己构造的，并非api返回
 }
 
 // 提现回调
@@ -138,10 +101,13 @@ type CCoopWithdrawBackReq struct {
 	TradeType   string `json:"trade_type"`  //withdraw
 	CurrencyAmo string `json:"currency_amo"`
 	Merchant    string `json:"merchant"`
-	OrderName   string `json:"order_name"`
-	Withdraw    string `json:"withdraw"`
-	OrderStatus string `json:"order_status"` //比如: confirm
-	MerID       string `json:"mer_id"`       //商户id
+	OrderName   string `json:"order_name"` // 商户userName
+	AmountUSD   string `json:"amount_usd"` //数量
+	AmountTHB   string `json:"amount_thb"` //数量
+	BankName    string `json:"bank_name"`
+	AcName      string `json:"ac_name"`      //merchant的用户name
+	OrderStatus string `json:"order_status"` //confirm
+	MerID       string `json:"mer_id"`
 	Ref1        string `json:"ref1"`
 }
 
