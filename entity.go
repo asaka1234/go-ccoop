@@ -34,11 +34,11 @@ type CCoopInitParams struct {
 	}
 */
 type CCoopDepositRequest struct {
-	OrderNum     string `json:"order_num" mapstructure:"order_num"`         //商户的订单号
-	Deposit      string `json:"deposit" mapstructure:"deposit"`             //数量 amount (ccy就是THB,是写死的)
-	OrderName    string `json:"order_name" mapstructure:"order_name"`       //商户订单username
-	ExchangeRate string `json:"exchange_rate" mapstructure:"exchange_rate"` //要真实汇率  USDTHB
+	OrderNum  string `json:"order_num" mapstructure:"order_num"`   //商户的订单号
+	Deposit   string `json:"deposit" mapstructure:"deposit"`       //数量 amount (ccy就是THB,是写死的)
+	OrderName string `json:"order_name" mapstructure:"order_name"` //商户订单username
 	//以下sdk来搞`
+	//ExchangeRate string `json:"exchange_rate" mapstructure:"exchange_rate"` //要真实汇率  USDTHB
 	//OrderStatus string `json:"order_status" mapstructure:"order_status"` //写死，都是 0  created
 	//TradeType  string `json:"trade_type" mapstructure:"trade_type"`   //写死deposit
 	//CreateTime string `json:"create_time" mapstructure:"create_time"` //yyyy-MM-dd, 当前时间
@@ -103,11 +103,11 @@ type CCoopDepositBackRsp struct {
 	}
 */
 type CCoopWithdrawRequest struct {
-	OrderNum     string `json:"order_num" mapstructure:"order_num"`   //商户的订单号
-	Withdraw     string `json:"withdraw" mapstructure:"withdraw"`     //数量 (ccy就是THB,是写死的)
-	OrderName    string `json:"order_name" mapstructure:"order_name"` //商户的用户name
-	ExchangeRate string `json:"ex_rate" mapstructure:"ex_rate"`       //要真实汇率  USDTHB
+	OrderNum  string `json:"order_num" mapstructure:"order_num"`   //商户的订单号
+	Withdraw  string `json:"withdraw" mapstructure:"withdraw"`     //数量 (ccy就是THB,是写死的)
+	OrderName string `json:"order_name" mapstructure:"order_name"` //商户的用户name
 	//以下sdk来搞
+	//ExchangeRate string `json:"ex_rate" mapstructure:"ex_rate"`       //要真实汇率  USDTHB
 	//OrderStatus string `json:"order_status" mapstructure:"order_status"` //写死，都是 0
 	//TradeType  string `json:"trade_type" mapstructure:"trade_type"`   //写死 withdraw
 	//CreateTime string `json:"create_time" mapstructure:"create_time"` //yyyy-MM-dd, 当前时间

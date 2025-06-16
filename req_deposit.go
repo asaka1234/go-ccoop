@@ -2,6 +2,7 @@ package go_ccoop
 
 import (
 	"crypto/tls"
+	"errors"
 	"fmt"
 	"github.com/asaka1234/go-ccoop/utils"
 	"github.com/mitchellh/mapstructure"
@@ -24,6 +25,7 @@ func (cli *Client) Deposit(req CCoopDepositRequest) (*CCoopDepositResponse, erro
 	params["callback_url"] = cli.Params.DepositBackUrl //ajax回调接口
 	params["return_url"] = cli.Params.DepositFeBackUrl //前端回跳地址
 	params["ref1"] = req.OrderNum                      //也是商户订单号
+	params["exchange_rate"] = 1
 
 	signStr, _ := utils.Sign(cli.Params.MerchantId, cli.Params.SecretKey)
 	params["signature"] = signStr
@@ -47,8 +49,14 @@ func (cli *Client) Deposit(req CCoopDepositRequest) (*CCoopDepositResponse, erro
 		return nil, err
 	}
 
-	if result.Status == "ok" && result.Ref1 != "" {
-		result.QRCodeUrl = cli.Params.QRCodeUrl + result.Ref1 //拼凑收银台地址
+	if result.Status == "ok" {
+		if result.AmountTHB == 0 {
+			return nil, errors.New("convert to thb wrong!")
+		}
+
+		if result.Ref1 != "" {
+			result.QRCodeUrl = cli.Params.QRCodeUrl + result.Ref1 //拼凑收银台地址
+		}
 	}
 
 	return &result, err

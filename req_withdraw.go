@@ -24,6 +24,7 @@ func (cli *Client) Withdraw(req CCoopWithdrawRequest) (*CCoopWithdrawResponse, e
 	params["callback_url"] = cli.Params.DepositBackUrl //ajax回调接口
 	params["return_url"] = cli.Params.DepositFeBackUrl //前端回跳地址
 	params["ref1"] = req.OrderNum                      //也是商户订单号
+	params["exchange_rate"] = 1
 
 	signStr, _ := utils.Sign(cli.Params.MerchantId, cli.Params.SecretKey)
 	params["signature"] = signStr
