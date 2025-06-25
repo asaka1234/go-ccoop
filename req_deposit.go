@@ -1,7 +1,10 @@
 package go_ccoop
 
 import (
+	"crypto/hmac"
+	"crypto/sha256"
 	"crypto/tls"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"github.com/asaka1234/go-ccoop/utils"
@@ -55,7 +58,14 @@ func (cli *Client) Deposit(req CCoopDepositRequest) (*CCoopDepositResponse, erro
 		}
 
 		if result.Ref1 != "" {
-			result.QRCodeUrl = cli.Params.QRCodeUrl + result.Ref1 //拼凑收银台地址
+			//对参数做签名
+			data := cli.Params.MerchantId + result.Ref1
+			h := hmac.New(sha256.New, []byte(cli.Params.SecretKey))
+			h.Write([]byte(data))
+			sign := hex.EncodeToString(h.Sum(nil))
+
+			url := fmt.Sprintf("%s?ref1=%s&merid=%s&sign=%s", cli.Params.QRCodeUrl, result.Ref1, cli.Params.MerchantId, sign)
+			result.QRCodeUrl = url //拼凑收银台地址
 		}
 	}
 
