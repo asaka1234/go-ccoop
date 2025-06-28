@@ -42,6 +42,7 @@ func (cli *Client) Deposit(req CCoopDepositRequest) (*CCoopDepositResponse, erro
 		SetBody(params).
 		SetHeaders(getHeaders()).
 		SetDebug(cli.debugMode).
+		SetLogger(cli.logger).
 		SetResult(&result).
 		SetError(&result).
 		Post(rawURL)

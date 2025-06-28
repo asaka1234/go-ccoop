@@ -38,6 +38,7 @@ func (cli *Client) Withdraw(req CCoopWithdrawRequest) (*CCoopWithdrawResponse, e
 		SetBody(params).
 		SetHeaders(getHeaders()).
 		SetDebug(cli.debugMode).
+		SetLogger(cli.logger).
 		SetResult(&result).
 		SetError(&result).
 		Post(rawURL)
