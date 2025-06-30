@@ -8,7 +8,7 @@ import (
 func TestWithdraw(t *testing.T) {
 	vLog := VLog{}
 	//构造client
-	cli := NewClient(vLog, &CCoopInitParams{Merchant_ID, SECRET_KEY, IP, BASE_URL, QRCode_Url, Deposit_CallBack_Url, DepositFeBackUrl, WithdrawBackUrl})
+	cli := NewClient(vLog, &CCoopInitParams{Merchant_ID, SECRET_KEY, IP, BASE_URL, QRCode_Url, Deposit_CallBack_Url, DepositFeBackUrl, WithdrawBackUrl, WithdrawFeBackUrl})
 	cli.SetDebugModel(true)
 
 	//发请求
