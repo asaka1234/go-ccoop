@@ -47,10 +47,18 @@ func (cli *Client) Deposit(req CCoopDepositRequest) (*CCoopDepositResponse, erro
 		SetError(&result).
 		Post(rawURL)
 
-	fmt.Printf("result: %s\n", string(resp.Body()))
-
 	if err != nil {
 		return nil, err
+	}
+
+	if resp.StatusCode() != 200 {
+		//反序列化错误会在此捕捉
+		return nil, fmt.Errorf("status code: %d", resp.StatusCode())
+	}
+
+	if resp.Error() != nil {
+		//反序列化错误会在此捕捉
+		return nil, fmt.Errorf("%v, body:%s", resp.Error(), resp.Body())
 	}
 
 	if result.Status == "ok" {

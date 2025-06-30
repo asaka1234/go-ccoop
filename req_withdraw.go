@@ -49,6 +49,11 @@ func (cli *Client) Withdraw(req CCoopWithdrawRequest) (*CCoopWithdrawResponse, e
 		return nil, err
 	}
 
+	if resp.StatusCode() != 200 {
+		//反序列化错误会在此捕捉
+		return nil, fmt.Errorf("status code: %d", resp.StatusCode())
+	}
+
 	if resp.Error() != nil {
 		//反序列化错误会在此捕捉
 		return nil, fmt.Errorf("%v, body:%s", resp.Error(), resp.Body())
