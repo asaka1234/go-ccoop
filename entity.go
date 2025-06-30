@@ -8,9 +8,10 @@ type CCoopInitParams struct {
 	BaseUrl   string `json:"baseUrl" mapstructure:"baseUrl" config:"baseUrl"  yaml:"baseUrl"`
 	QRCodeUrl string `json:"qrCodeUrl" mapstructure:"qrCodeUrl" config:"qrCodeUrl"  yaml:"qrCodeUrl"`
 
-	DepositBackUrl   string `json:"depositBackUrl" mapstructure:"depositBackUrl" config:"depositBackUrl"  yaml:"depositBackUrl"`
-	DepositFeBackUrl string `json:"depositFeBackUrl" mapstructure:"depositFeBackUrl" config:"depositFeBackUrl"  yaml:"depositFeBackUrl"`
-	WithdrawBackUrl  string `json:"withdrawBackUrl" mapstructure:"withdrawBackUrl" config:"withdrawBackUrl"  yaml:"withdrawBackUrl"`
+	DepositBackUrl    string `json:"depositBackUrl" mapstructure:"depositBackUrl" config:"depositBackUrl"  yaml:"depositBackUrl"`
+	DepositFeBackUrl  string `json:"depositFeBackUrl" mapstructure:"depositFeBackUrl" config:"depositFeBackUrl"  yaml:"depositFeBackUrl"`
+	WithdrawBackUrl   string `json:"withdrawBackUrl" mapstructure:"withdrawBackUrl" config:"withdrawBackUrl"  yaml:"withdrawBackUrl"`
+	WithdrawFeBackUrl string `json:"withdrawFeBackUrl" mapstructure:"withdrawFeBackUrl" config:"withdrawFeBackUrl"  yaml:"withdrawFeBackUrl"`
 }
 
 // ---------------------------------
