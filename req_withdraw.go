@@ -20,7 +20,6 @@ func (cli *Client) Withdraw(req CCoopWithdrawRequest) (*CCoopWithdrawResponse, e
 	params["trade_type"] = "withdraw" //写死
 	params["create_time"] = cTime.Format("2006-01-02")
 	params["mer_id"] = cli.Params.MerchantId            //cli.merchantID
-	params["name"] = "john"                             //cli.merchantName
 	params["callback_url"] = cli.Params.WithdrawBackUrl //ajax回调接口
 	params["return_url"] = cli.Params.WithdrawFeBackUrl //前端回跳地址
 	params["ref1"] = req.OrderNum                       //也是商户订单号

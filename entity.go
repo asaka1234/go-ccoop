@@ -73,13 +73,13 @@ type CCoopWithdrawRequest struct {
 	OrderNum  string `json:"order_num" mapstructure:"order_num"`   //商户的订单号
 	Withdraw  string `json:"withdraw" mapstructure:"withdraw"`     //数量 (ccy就是THB,是写死的)
 	OrderName string `json:"order_name" mapstructure:"order_name"` //商户的用户name
+	Name      string `json:"name" mapstructure:"name"`             //银行卡信息,用逗号拼接的:  banName,bankAccount
 	//以下sdk来搞
 	//ExchangeRate string `json:"ex_rate" mapstructure:"ex_rate"`       //要真实汇率  USDTHB
 	//OrderStatus string `json:"order_status" mapstructure:"order_status"` //写死，都是 0
 	//TradeType  string `json:"trade_type" mapstructure:"trade_type"`   //写死 withdraw
 	//CreateTime string `json:"create_time" mapstructure:"create_time"` //yyyy-MM-dd, 当前时间
 	//MerID       string `json:"mer_id" mapstructure:"mer_id"`             //商户号
-	//Name        string `json:"name" mapstructure:"name"`                 //Merchant_Name
 	//CallbackURL string `json:"callback_url" mapstructure:"callback_url"`
 	//ReturnURL   string `json:"return_url" mapstructure:"return_url"`
 	//Ref1        string `json:"ref1" mapstructure:"ref1"` //这个是一个md5签名,让sdk来计算
