@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/asaka1234/go-ccoop/utils"
+	jsoniter "github.com/json-iterator/go"
 	"github.com/mitchellh/mapstructure"
 	"time"
 )
@@ -46,6 +47,9 @@ func (cli *Client) Deposit(req CCoopDepositRequest) (*CCoopDepositResponse, erro
 		SetResult(&result).
 		SetError(&result).
 		Post(rawURL)
+
+	restLog, _ := jsoniter.ConfigCompatibleWithStandardLibrary.Marshal(utils.GetRestyLog(resp))
+	cli.logger.Infof("PSPResty#ccoop#deposit->%+v", string(restLog))
 
 	if err != nil {
 		return nil, err

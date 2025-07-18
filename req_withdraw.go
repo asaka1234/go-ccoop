@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"fmt"
 	"github.com/asaka1234/go-ccoop/utils"
+	jsoniter "github.com/json-iterator/go"
 	"github.com/mitchellh/mapstructure"
 	"time"
 )
@@ -42,7 +43,8 @@ func (cli *Client) Withdraw(req CCoopWithdrawRequest) (*CCoopWithdrawResponse, e
 		SetError(&result).
 		Post(rawURL)
 
-	fmt.Printf("result: %s\n", string(resp.Body()))
+	restLog, _ := jsoniter.ConfigCompatibleWithStandardLibrary.Marshal(utils.GetRestyLog(resp))
+	cli.logger.Infof("PSPResty#ccoop#withdraw->%+v", string(restLog))
 
 	if err != nil {
 		return nil, err
