@@ -5,12 +5,12 @@ import (
 	"crypto/sha256"
 	"crypto/tls"
 	"encoding/hex"
-	"errors"
 	"fmt"
+	"time"
+
 	"github.com/asaka1234/go-ccoop/utils"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/mitchellh/mapstructure"
-	"time"
 )
 
 func (cli *Client) Deposit(req CCoopDepositRequest) (*CCoopDepositResponse, error) {
@@ -66,9 +66,9 @@ func (cli *Client) Deposit(req CCoopDepositRequest) (*CCoopDepositResponse, erro
 	}
 
 	if result.Status == "ok" {
-		if result.AmountTHB == 0 {
-			return nil, errors.New("convert to thb wrong!")
-		}
+		// if result.AmountTHB == 0 {
+		// 	return nil, errors.New("convert to thb wrong!")
+		// }
 
 		if result.Ref1 != "" {
 			//对参数做签名
